@@ -8,7 +8,7 @@ const navLinks = [
 	title: "About Us",
  },
  {
-	id: "work",
+	id: "art",
 	title: "The Art",
  },
  {
@@ -120,17 +120,17 @@ const socials = [
  {
 	name: "Instagram",
 	icon: "/images/insta.png",
-	url: "#",
+	url: "https://www.instagram.com/prakhargaba/",
  },
  {
-	name: "X (Twitter)",
-	icon: "/images/x.png",
-	url: "#",
+	name: "LinkedIn",
+	icon: "/images/linkedin.png",
+	url: "https://www.linkedin.com/in/prakhar-gaba-7277b7235/",
  },
  {
-	name: "Facebook",
-	icon: "/images/fb.png",
-	url: "#",
+	name: "Personal Website",
+	icon: "/images/logopg.png",
+	url: "https://prakhargaba.com",
  },
 ];
 

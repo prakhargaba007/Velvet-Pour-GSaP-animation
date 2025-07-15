@@ -65,8 +65,9 @@ const Contact = () => {
 
         <div>
           <h3>Contact Us</h3>
-          <p>(555) 987-6543</p>
-          <p>hello@jsmcocktail.com</p>
+          <p><a href="tel:+919024987693" className="text-white hover:text-yellow/80">+91 9024987693</a></p>
+          <p><a href="mailto:prakhargaba@gmail.com" className="text-white hover:text-yellow/80">prakhargaba@gmail.com</a></p>
+          <p><a href="https://www.prakhargaba.com" className="text-white hover:text-yellow/80">www.prakhargaba.com</a></p>
         </div>
 
         <div>
@@ -90,7 +91,7 @@ const Contact = () => {
                 rel="noopener noreferrer"
                 aria-label={social.name}
               >
-                <img src={social.icon} />
+                <img src={social.icon} className="w-8 h-8" />
               </a>
             ))}
           </div>
