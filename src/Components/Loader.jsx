@@ -4,17 +4,145 @@ import gsap from "gsap";
 const Loader = ({ setLoading }) => {
   const [progress, setProgress] = useState(0);
   const progressRef = useRef(0);
+  const assetsLoadedRef = useRef(false);
+  const timelineCompletedRef = useRef(false);
+  const loadedAssetsCountRef = useRef(0);
+  const totalAssetsRef = useRef(0);
 
+  // Preload critical assets
   useEffect(() => {
-    // Create a timeline for the loader animation
-    const tl = gsap.timeline({
-      onComplete: () => {
-        // Hide loader after completion with a fade out
+    // Function to check if both conditions are met to hide loader
+    const checkComplete = () => {
+      if (assetsLoadedRef.current && timelineCompletedRef.current) {
         gsap.to(".loader-container", {
           opacity: 0,
           duration: 0.5,
           onComplete: () => setLoading(false),
         });
+      }
+    };
+    
+    // Function to update progress consistently
+    const updateProgress = () => {
+      // Calculate weighted progress (70% assets, 30% timeline)
+      const assetProgress = loadedAssetsCountRef.current / totalAssetsRef.current;
+      const weightedAssetProgress = Math.min(assetProgress * 70, 70); // 70% weight to assets
+      const animationProgress = Math.min(progressRef.current, 30); // 30% weight to animation
+      
+      // Combined progress
+      const combinedProgress = Math.min(Math.round(weightedAssetProgress + animationProgress), 100);
+      
+      // Update both the state and the style directly
+      setProgress(combinedProgress);
+      
+      // Update the progress bar width directly for immediate visual feedback
+      const progressBar = document.querySelector(".progress-bar-fill");
+      if (progressBar) {
+        progressBar.style.width = `${combinedProgress}%`;
+      }
+    };
+    
+    const imageUrls = [
+      "/images/noise.png",
+      "/images/hero-left-leaf.png",
+      "/images/hero-right-leaf.png",
+      "/images/logo.png",
+      "/fonts/Modern Negra Demo.ttf",
+      "/images/slider-left-leaf.png",
+      "/images/slider-right-leaf.png",
+      "/images/mask-img.png",
+      "/images/under-img.jpg",
+      "/images/check.png"
+    ];
+    
+    totalAssetsRef.current = imageUrls.length + 1; // +1 for fonts
+    
+    // Track font loading
+    document.fonts.ready.then(() => {
+      // Fonts are loaded
+      loadedAssetsCountRef.current += 1;
+      updateProgress();
+      
+      if (loadedAssetsCountRef.current >= totalAssetsRef.current - 1) {
+        assetsLoadedRef.current = true;
+        checkComplete();
+      }
+    });
+
+    // Preload images
+    imageUrls.forEach(url => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        loadedAssetsCountRef.current += 1;
+        updateProgress();
+        
+        if (loadedAssetsCountRef.current >= totalAssetsRef.current - 1) {
+          assetsLoadedRef.current = true;
+          checkComplete();
+        }
+      };
+      img.onerror = () => {
+        // Count errors as loaded to avoid hanging
+        loadedAssetsCountRef.current += 1;
+        updateProgress();
+        
+        if (loadedAssetsCountRef.current >= totalAssetsRef.current - 1) {
+          assetsLoadedRef.current = true;
+          checkComplete();
+        }
+      };
+    });
+
+    return () => {
+      // Clean up any image loading
+      imageUrls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+        img.onload = null;
+        img.onerror = null;
+      });
+    };
+  }, [setLoading]);
+
+  // Animation timeline
+  useEffect(() => {
+    // Function to check if both conditions are met to hide loader
+    const checkComplete = () => {
+      if (assetsLoadedRef.current && timelineCompletedRef.current) {
+        gsap.to(".loader-container", {
+          opacity: 0,
+          duration: 0.5,
+          onComplete: () => setLoading(false),
+        });
+      }
+    };
+    
+    // Function to update progress consistently
+    const updateProgress = () => {
+      // Calculate weighted progress (70% assets, 30% timeline)
+      const assetProgress = loadedAssetsCountRef.current / totalAssetsRef.current;
+      const weightedAssetProgress = Math.min(assetProgress * 70, 70); // 70% weight to assets
+      const animationProgress = Math.min(progressRef.current, 30); // 30% weight to animation
+      
+      // Combined progress
+      const combinedProgress = Math.min(Math.round(weightedAssetProgress + animationProgress), 100);
+      
+      // Update both the state and the style directly
+      setProgress(combinedProgress);
+      
+      // Update the progress bar width directly for immediate visual feedback
+      const progressBar = document.querySelector(".progress-bar-fill");
+      if (progressBar) {
+        progressBar.style.width = `${combinedProgress}%`;
+      }
+    };
+    
+    // Create a timeline for the loader animation
+    const tl = gsap.timeline({
+      onComplete: () => {
+        timelineCompletedRef.current = true;
+        checkComplete();
       },
     });
 
@@ -25,51 +153,28 @@ const Loader = ({ setLoading }) => {
       { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" }
     );
 
-    // Then start the progress bar
-    tl.to(".progress-bar-fill", {
+    // Then start the progress bar animation (animation portion only)
+    tl.to(".animation-progress", {
       width: "100%",
-      duration: 2.5,
+      duration: 3.5,
       ease: "power2.inOut",
       onUpdate: () => {
-        // Update progress state based on the animation progress
-        const progressValue = Math.round((tl.time() / 3.1) * 100);
-        const cappedValue = Math.min(progressValue, 100);
-        progressRef.current = cappedValue;
-        setProgress(cappedValue);
+        // Update animation progress (30% of total)
+        const animProgress = Math.round((tl.progress() * 30));
+        progressRef.current = animProgress;
+        updateProgress();
       },
     });
-
-    // Ensure the document is fully loaded
-    const handleLoad = () => {
-      // If window load happens before animation completes, speed up to 100%
-      if (progressRef.current < 100) {
-        gsap.to(".progress-bar-fill", {
-          width: "100%",
-          duration: 0.5,
-          ease: "power2.inOut",
-          onUpdate: () => setProgress(100),
-          onComplete: () => {
-            gsap.to(".loader-container", {
-              opacity: 0,
-              duration: 0.5,
-              onComplete: () => setLoading(false),
-            });
-          },
-        });
-      }
-    };
-
-    window.addEventListener("load", handleLoad);
 
     // Add a minimum display time to prevent flashing on fast loads
     const minDisplayTime = setTimeout(() => {
       if (document.readyState === "complete") {
-        handleLoad();
+        timelineCompletedRef.current = true;
+        checkComplete();
       }
-    }, 2000);
+    }, 2500);
 
     return () => {
-      window.removeEventListener("load", handleLoad);
       clearTimeout(minDisplayTime);
     };
   }, [setLoading]);
@@ -91,6 +196,8 @@ const Loader = ({ setLoading }) => {
               className="progress-bar-fill h-full bg-yellow"
               style={{ width: "0%" }}
             ></div>
+            {/* Hidden element for animation tracking */}
+            <div className="animation-progress hidden"></div>
           </div>
 
           <div className="flex justify-between w-full">
