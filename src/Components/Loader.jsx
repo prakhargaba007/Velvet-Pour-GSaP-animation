@@ -187,7 +187,7 @@ const Loader = ({ setLoading }) => {
         <div className="flex flex-col items-center space-y-8">
           <div className="loader-logo">
             <h1 className="text-5xl font-modern-negra text-yellow mb-2">
-              COCKTAIL
+              Velvet Pour
             </h1>
             <p className="text-center text-white/70">Premium Experience</p>
           </div>
