@@ -43,11 +43,12 @@ const Loader = ({ setLoading }) => {
     };
     
     const imageUrls = [
-      "/images/noise.png",
+      "/images/noise.webp",
       "/images/hero-left-leaf.png",
       "/images/hero-right-leaf.png",
       "/images/logo.png",
-      "/fonts/Modern Negra Demo.ttf",
+      "/fonts/modern-negra.woff2",
+      "/fonts/modern-negra.woff",
       "/images/slider-left-leaf.png",
       "/images/slider-right-leaf.png",
       "/images/mask-img.png",

@@ -4,8 +4,15 @@
 
 @font-face {
   font-family: "Modern Negra";
-  src: url("/fonts/Modern Negra Demo.ttf") format("truetype");
+  src: url("/fonts/ModernNegraDemo.woff2") format("woff2"),
+    url("/fonts/ModernNegraDemo.woff") format("woff");
+  font-display: swap;
 }
+
+/* @font-face {
+  font-family: "Modern Negra";
+  src: url("/fonts/Modern Negra Demo.ttf") format("truetype");
+} */
 
 @theme {
   --color-yellow: #e7d393;
@@ -103,7 +110,7 @@ body {
   }
 
   .noisy {
-    @apply absolute inset-0 size-full bg-[url("/images/noise.png")];
+    @apply absolute inset-0 size-full bg-[url("/images/noise.webp")];
   }
 
   #hero {

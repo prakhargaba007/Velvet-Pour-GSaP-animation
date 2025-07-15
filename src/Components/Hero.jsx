@@ -127,7 +127,10 @@ function Hero() {
           playsInline
           preload="auto"
           src="/videos/output.mp4"
-        />
+        >
+          <source src="/videos/output.webm" type="video/webm" />
+          <source src="/videos/output.mp4" type="video/mp4" />
+        </video>
       </div>
     </>
   );
