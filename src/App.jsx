@@ -21,12 +21,12 @@ function App() {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
-      
+
       // Initialize any animations that depend on fully loaded content
       gsap.to("main", {
         opacity: 1,
         duration: 0.5,
-        ease: "power2.inOut"
+        ease: "power2.inOut",
       });
     }
   }, [loading]);
@@ -34,10 +34,10 @@ function App() {
   return (
     <>
       {loading && <Loader setLoading={setLoading} />}
-      
+
       <main style={{ opacity: loading ? 0 : 1 }}>
         <Navbar />
-        <Hero />
+        {!loading && <Hero />}
         <Cocktails />
         <About />
         <Art />
