@@ -1,4 +1,7 @@
-import { openingHours, socials } from "../../constants/index.js";
+import {
+  openingHours,
+  // socials
+} from "../../constants/index.js";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all";
 import gsap from "gsap";
@@ -65,9 +68,30 @@ const Contact = () => {
 
         <div>
           <h3>Contact Us</h3>
-          <p><a href="tel:+919024987693" className="text-white hover:text-yellow/80">+91 9024987693</a></p>
-          <p><a href="mailto:prakhargaba@gmail.com" className="text-white hover:text-yellow/80">prakhargaba@gmail.com</a></p>
-          <p><a href="https://www.prakhargaba.com" className="text-white hover:text-yellow/80">www.prakhargaba.com</a></p>
+          <p>
+            <a
+              href="tel:+919024987693"
+              className="text-white hover:text-yellow/80"
+            >
+              +91 9024987693
+            </a>
+          </p>
+          <p>
+            <a
+              href="mailto:prakhargaba@gmail.com"
+              className="text-white hover:text-yellow/80"
+            >
+              prakhargaba@gmail.com
+            </a>
+          </p>
+          <p>
+            <a
+              href="https://www.prakhargaba.com"
+              className="text-white hover:text-yellow/80"
+            >
+              www.prakhargaba.com
+            </a>
+          </p>
         </div>
 
         <div>
@@ -79,7 +103,7 @@ const Contact = () => {
           ))}
         </div>
 
-        <div>
+        {/* <div>
           <h3>Socials</h3>
 
           <div className="flex-center gap-5">
@@ -95,7 +119,7 @@ const Contact = () => {
               </a>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
